@@ -1,0 +1,6 @@
+name: TLI-Minigame-Engine
+version: '1.0-SNAPSHOT'
+main: mc.tli.minigame_engine.TliMinigameEngine
+api-version: '1.21'
+load: STARTUP
+authors: [ Royboot ]
