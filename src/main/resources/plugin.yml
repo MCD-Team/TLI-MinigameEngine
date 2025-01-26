@@ -4,3 +4,8 @@ main: mc.tli.minigame_engine.TliMinigameEngine
 api-version: '1.21'
 load: STARTUP
 authors: [ Royboot ]
+commands:
+  moderationban:
+    description: used to ban people mid minigame
+    usage: /miniban
+
