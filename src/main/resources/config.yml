@@ -1,0 +1,18 @@
+required-players:
+max-players
+countdown-seconds: 30
+lobby-spawn:
+  world: 'world'
+  x: 0
+  y: 64
+  z: 0
+  yaw: -180
+  pitch: 0
+arenas:
+  0:
+    world: 'minigame'
+    x: 0
+    y: 64
+    z: 0
+    yaw: 180
+    pitch: 0
