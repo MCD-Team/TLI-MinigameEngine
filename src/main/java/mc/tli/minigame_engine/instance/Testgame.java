@@ -4,12 +4,13 @@ import mc.tli.minigame_engine.GameState;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class Testgame {
+public class Testgame implements Listener {
     private boolean isPlayerRemoved = false;
     private Arena arena;
     private HashMap<UUID,Integer> points;
