@@ -1,6 +1,8 @@
 required-players: 2
 max-players: 8
 countdown-seconds: 30
+error-prefix: '&f[&cError&f]&r'
+success-prefix: '&f[&Success&f]&r'
 lobby-spawn:
   world: 'world'
   x: 0
