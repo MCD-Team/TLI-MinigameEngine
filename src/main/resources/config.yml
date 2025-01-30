@@ -1,5 +1,5 @@
-required-players:
-max-players
+required-players: 2
+max-players: 8
 countdown-seconds: 30
 lobby-spawn:
   world: 'world'
