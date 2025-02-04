@@ -16,8 +16,7 @@ public final class TliMinigameEngine extends JavaPlugin {
     public void onEnable() {
        utils = (Utils)Bukkit.getServer().getPluginManager().getPlugin("TLI-Utils");
         ConfigManager.initConfig(this);
-        getCommand("min" +
-                "igameban").setExecutor(new banUser(null,null));
+        getCommand("minigameban").setExecutor(new banUser(null,null));
     }
 
     @Override
