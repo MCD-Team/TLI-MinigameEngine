@@ -1,7 +1,7 @@
 package mc.tli.minigame_engine.instance;
 
 import mc.tli.minigame_engine.GameState;
-import mc.tli.minigame_engine.Managers.ConfigManager;
+import mc.tli.minigame_engine.managers.ConfigManager;
 import mc.tli.minigame_engine.TliMinigameEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;

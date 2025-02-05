@@ -7,6 +7,9 @@ import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.moderation.banUser;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -35,12 +38,14 @@ public class Arena {
     public void startGame(){
         testgame.start();
     }
-    public void reset(boolean isPlayerRemoved){
+    public void reset(boolean isPlayerRemoved,boolean kickPlayers){
+//  player hase been removed do magic dion wants
         if(isPlayerRemoved)
         {
-            for(UUID p : players){
-                Bukkit.getPlayer(p).teleport(ConfigManager.getLobbyLocation());
-            }
+            teleportPlayers(players,ConfigManager.getLobbyLocation());
+        }
+        if(kickPlayers){
+            teleportPlayers(players,ConfigManager.getLobbyLocation());
         }
         players.clear();
         state = GameState.QUEUEING;
@@ -70,12 +75,14 @@ public class Arena {
         if(state.equals(GameState.COUNTINGDOWN)&&players.size()<ConfigManager.getRequiredPlayers()){
             sendMessage("To many players have left canceling countdown");
             countdown.cancel();
+            return;
         }
         if(state.equals(GameState.LIVE)){
             if (players.size()< ConfigManager.getPlayerTreshold()) {
                 sendMessage("To many people have left kicking all players in ");
                 kickPlayers();
             }
+            return;
         }
     }
     public void setState(GameState state){
@@ -94,6 +101,36 @@ public class Arena {
     public void kickPlayers(){
         for(UUID uuid : players){
             Bukkit.getPlayer(uuid).teleport(ConfigManager.getLobbyLocation());
+        }
+    }
+    public static BossBar addBossbar(List<Player> players, String Title, BarColor color, BarStyle style){
+        BossBar bossbar = Bukkit.createBossBar(Title, color, style);
+        for(Player p : players){
+            if(p != null){
+                bossbar.addPlayer(p);
+            }
+        }
+        return bossbar;
+    }
+    public static void removeBossbar(List<Player> players,BossBar bossbar){
+        for(Player p : players){
+            if(p != null){
+                bossbar.removePlayer(p);
+            }
+        }
+    }
+    public static void teleportPlayers(List<UUID> players, Location location){
+        for(Player p : players){
+            if(p != null){
+                p.teleport(location);
+            }
+        }
+    }
+    public static void addTitle(List<Player>players,String Title,String subText,int fadeIn,int stayTime,int fadeOut){
+        for(Player p : players){
+            if(p != null){
+                p.sendTitle(Title, subText, fadeIn, stayTime, fadeOut);
+            }
         }
     }
 
