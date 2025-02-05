@@ -1,10 +1,9 @@
-package mc.tli.minigame_engine.Managers;
+package mc.tli.minigame_engine.managers;
 
 import mc.tli.minigame_engine.TliMinigameEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigManager {
     private  static FileConfiguration config;
@@ -12,6 +11,8 @@ public class ConfigManager {
         ConfigManager.config = main.getConfig();
         main.saveConfig();
     }
+    public static int getPlayerTreshold(){return config.getInt("playerTreshold");}
+    public static int getKickCountdown(){return config.getInt("kickCountdown");}
     public static int getRequiredPlayers(){return config.getInt("required-players");}
     public static int getMaxPlayers(){return config.getInt("max-players");}
     public static int getCountDownSeconds(){return config.getInt("countdown-seconds");}

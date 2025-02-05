@@ -1,5 +1,7 @@
 required-players:
-max-players
+max-players:
+player-treshold:
+kick-countdown: 20
 countdown-seconds: 30
 lobby-spawn:
   world: 'world'

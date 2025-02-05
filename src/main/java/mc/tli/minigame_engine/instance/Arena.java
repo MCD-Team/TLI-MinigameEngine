@@ -1,7 +1,7 @@
 package mc.tli.minigame_engine.instance;
 
 import mc.tli.minigame_engine.GameState;
-import mc.tli.minigame_engine.Managers.ConfigManager;
+import mc.tli.minigame_engine.managers.ConfigManager;
 
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.moderation.banUser;
@@ -57,13 +57,26 @@ public class Arena {
         player.teleport(spawn);
         if(state.equals(GameState.QUEUEING) &&players.size()>= ConfigManager.getRequiredPlayers()&&players.size()<=ConfigManager.getMaxPlayers()){
             countdown.start();
+            sendMessage("Enough players have joined starting countdown");
 
         }
     }
-
+    public Testgame getGame(){
+        return testgame;
+    }
     public void removePlayer(Player player){
         players.remove(player.getUniqueId());
         player.teleport(ConfigManager.getLobbyLocation());
+        if(state.equals(GameState.COUNTINGDOWN)&&players.size()<ConfigManager.getRequiredPlayers()){
+            sendMessage("To many players have left canceling countdown");
+            countdown.cancel();
+        }
+        if(state.equals(GameState.LIVE)){
+            if (players.size()< ConfigManager.getPlayerTreshold()) {
+                sendMessage("To many people have left kicking all players in ");
+                kickPlayers();
+            }
+        }
     }
     public void setState(GameState state){
         this.state = state;
@@ -76,6 +89,11 @@ public class Arena {
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut){
         for(UUID uuid : players){
             Bukkit.getPlayer(uuid).sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+        }
+    }
+    public void kickPlayers(){
+        for(UUID uuid : players){
+            Bukkit.getPlayer(uuid).teleport(ConfigManager.getLobbyLocation());
         }
     }
 

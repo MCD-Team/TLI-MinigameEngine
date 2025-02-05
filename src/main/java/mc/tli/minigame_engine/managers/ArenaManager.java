@@ -1,4 +1,4 @@
-package mc.tli.minigame_engine.Managers;
+package mc.tli.minigame_engine.managers;
 
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.instance.Arena;
