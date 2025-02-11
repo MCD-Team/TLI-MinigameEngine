@@ -1,7 +1,7 @@
 name: TLI-Minigame-Engine
 version: '1.0-SNAPSHOT'
 main: mc.tli.minigame_engine.TliMinigameEngine
-api-version: '1.21'
+api-version: '1.20'
 load: STARTUP
 authors: [ Royboot ]
 commands:
@@ -9,4 +9,5 @@ commands:
     description: used to ban people mid minigame
     usage: /miniban
   game:
+
 

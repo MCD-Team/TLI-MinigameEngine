@@ -33,7 +33,7 @@ public class Arena {
         this.countdown = new Countdown(minigame,this);
         this.testgame = new Testgame(this);
         this.minigame = minigame;
-        this.banCommand = new banUser(this,testgame);
+        this.banCommand = new banUser(minigame);
     }
     public void startGame(){
         testgame.start();
