@@ -8,4 +8,5 @@ commands:
   moderationban:
     description: used to ban people mid minigame
     usage: /miniban
+  game:
 

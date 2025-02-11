@@ -22,13 +22,19 @@ public class GameCommand implements CommandExecutor {
                 Arena arena = plugin.getArenaManager().getArena(player);
 
                 if(arena!= null){
-                    if(arena.getPlayers().size() != 0){
+                    if(!arena.getPlayers().isEmpty()){
                         arena.removePlayer(player);
                     }
                 }else{
                     player.sendMessage(ChatColor.RED + "You are not in an arena");
                 }
-            }else{
+            } else if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
+                player.sendMessage(ChatColor.GREEN + "Arenas:");
+                for(Arena arena : plugin.getArenaManager().getArenas()){
+                    player.sendMessage(ChatColor.GREEN+"-"+arena.getId());
+                }
+            }
+            {
                 player.sendMessage(ChatColor.RED + "Usage: /game leave");
             }
         }
