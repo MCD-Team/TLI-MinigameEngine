@@ -13,8 +13,14 @@ import java.util.Objects;
 
 public class ArenaManager {
     private List<Arena> arenas = new ArrayList<>();
+    private TliMinigameEngine plugin;
     public ArenaManager(TliMinigameEngine main) {
-        FileConfiguration config = main.getConfig();
+        this.plugin = main;
+
+    }
+    public void addArena()
+    {
+        FileConfiguration config = plugin.getConfig();
         for(String str: Objects.requireNonNull(config.getConfigurationSection("arenas")).getKeys(false)) {
             arenas.add(new Arena(Integer.parseInt(str),new Location(
                     Bukkit.getWorld(config.getString("arenas."+str+".world")),
@@ -23,20 +29,19 @@ public class ArenaManager {
                     config.getDouble("arenas."+str+".z"),
                     (float)config.getDouble("arenas."+str+".yaw"),
                     (float)config.getDouble("arenas."+str+".pitch"))
-            ,main));
+                    ,plugin));
         }
     }
     public List<Arena> getArenas() {return arenas;}
     public Arena getArena(Player player) {
         for(Arena arena: arenas) {
-            if(arena.getPlayers().contains(player)) return arena;
+            if(arena.getPlayers().contains(player.getUniqueId())) return arena;
         }
         return null;
     }
     public Arena getArena(int id) {
         for(Arena arena: arenas) {
             if(arena.getId() == id) {return arena;}
-
         }
         return null;
     }
