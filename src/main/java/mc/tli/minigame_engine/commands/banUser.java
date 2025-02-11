@@ -1,4 +1,4 @@
-package mc.tli.minigame_engine.moderation;
+package mc.tli.minigame_engine.commands;
 
 import mc.tli.minigame_engine.instance.Arena;
 import mc.tli.minigame_engine.instance.Testgame;
