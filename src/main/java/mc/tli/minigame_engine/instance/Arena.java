@@ -4,7 +4,7 @@ import mc.tli.minigame_engine.GameState;
 import mc.tli.minigame_engine.managers.ConfigManager;
 
 import mc.tli.minigame_engine.TliMinigameEngine;
-import mc.tli.minigame_engine.moderation.banUser;
+import mc.tli.minigame_engine.commands.banUser;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
@@ -17,14 +17,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class Arena {
-    private int id;
-    private Location spawn;
+    private final int id;
+    private final Location spawn;
     private Countdown countdown;
     private GameState state;
-    private List<UUID> players;
+    private final List<UUID> players;
     private Testgame testgame;
-    private TliMinigameEngine minigame;
-    private banUser banCommand;
+    private final TliMinigameEngine minigame;
+    private final banUser banCommand;
     public Arena(int id, Location spawn, TliMinigameEngine minigame) {
         this.id = id;
         this.spawn = spawn;
@@ -120,9 +120,9 @@ public class Arena {
         }
     }
     public static void teleportPlayers(List<UUID> players, Location location){
-        for(Player p : players){
+        for(UUID p : players){
             if(p != null){
-                p.teleport(location);
+                Bukkit.getPlayer(p).teleport(location);
             }
         }
     }
