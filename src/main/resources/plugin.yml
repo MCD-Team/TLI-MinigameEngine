@@ -6,7 +6,7 @@ load: STARTUP
 authors: [ Royboot ]
 commands:
   moderationban:
-    description: used to ban people mid minigame
+    description: used to ban people in the middel of live minigames
     usage: /miniban
   game:
 
