@@ -28,7 +28,7 @@ public class Testgame implements Listener {
         int playerPoints = points.get(player.getUniqueId())+1;
         if(playerPoints == 20){
             arena.sendMessage(ChatColor.RED + player.getName()+ "has won");
-            arena.reset(isPlayerRemoved,false);
+//           TO DO arena.reset(isPlayerRemoved,false);
         }else{
             player.sendMessage(ChatColor.RED+"+1 point u now have"+points.toString()+"points");
             points.replace(player.getUniqueId(),playerPoints);
