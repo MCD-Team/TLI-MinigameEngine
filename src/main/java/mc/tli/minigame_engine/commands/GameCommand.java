@@ -19,12 +19,13 @@ public class GameCommand implements CommandExecutor {
         if(commandSender instanceof Player) {
             Player player = (Player) commandSender;
             Arena arena = plugin.getArenaManager().getArena(player);
+            //check if there is 1 argument given and if the string given contains leave then remove the player from the arena
             if (args.length == 1 && args[0].equalsIgnoreCase("leave")) {
-
-
                 if (arena != null) {
                     if (!arena.getPlayers().isEmpty()) {
                         arena.removePlayer(player);
+                    }else{
+                        player.sendMessage(ChatColor.RED + "No arena's found");
                     }
                 } else {
                     player.sendMessage(ChatColor.RED + "You are not in an arena");
@@ -37,8 +38,6 @@ public class GameCommand implements CommandExecutor {
                 for (Arena ar : plugin.getArenaManager().getArenas()) {
                     player.sendMessage(ChatColor.GREEN + "-" + ar.getId());
                 }
-
-
                 return false;
             } else {
                 player.sendMessage(ChatColor.RED + "Usage: /game leave");

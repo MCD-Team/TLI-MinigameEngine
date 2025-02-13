@@ -38,7 +38,6 @@ public class Testgame implements Listener {
     @EventHandler
     private void onPlayerDead(PlayerDeathEvent p){
         Player k = p.getPlayer().getKiller();
-
         if (k != null) {
             AddPoint(k);
         }

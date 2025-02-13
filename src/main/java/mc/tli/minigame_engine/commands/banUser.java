@@ -15,13 +15,14 @@ import java.util.UUID;
 
 public class banUser implements CommandExecutor {
     private final TliMinigameEngine main;
-    private final ArenaManager arenaManager = new ArenaManager(new TliMinigameEngine());
     public banUser(TliMinigameEngine main) {
         this.main = main;
     }
+    private final ArenaManager arenaManager = new ArenaManager(main);
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if(commandSender instanceof Player){
+            //get the arena bassed of the command sender
             Arena arena = arenaManager.getArena((Player) commandSender);
             Testgame testgame = arena.getGame();
             if(args.length != 0) {
@@ -29,18 +30,15 @@ public class banUser implements CommandExecutor {
                     commandSender.sendMessage(ChatColor.RED + "Usage: /ban player reason");
                     return true;
                 }
-
-                UUID uuid = Bukkit.getPlayer(args[0]).getUniqueId();
-                if(uuid == null){
-                    commandSender.sendMessage(ChatColor.RED + "Player not found");
-                }
-
-
-                Player target = Bukkit.getPlayer(uuid);
+                //get player based on the first argument passed in the command which should be a players name
+                Player target = Bukkit.getPlayer(args[0]);
                 if(target == null){
                     commandSender.sendMessage(ChatColor.RED + "Player not found");
                 }
-                if(arena.getPlayers().contains(target)){
+                assert target != null;
+                UUID uuid = target.getUniqueId();
+                //the player hase been found ban him in all possible ways
+                if(arena.getPlayers().contains(uuid)){
                     target.banPlayer(args[1]);
                     target.banPlayerIP(args[1]);
                     target.kickPlayer(args[1]);
@@ -53,8 +51,6 @@ public class banUser implements CommandExecutor {
         }else{
             commandSender.sendMessage(ChatColor.RED + "Only players can use this command");
         }
-
-
         return false;
     }
 }

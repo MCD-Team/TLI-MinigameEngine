@@ -42,10 +42,14 @@ public class Arena {
 //  player hase been removed do magic dion wants
         if(isPlayerRemoved)
         {
+            //TO DO add title screen and stop the game
             teleportPlayers(players,ConfigManager.getLobbyLocation());
         }
         if(kickPlayers){
             teleportPlayers(players,ConfigManager.getLobbyLocation());
+        }
+        if(state == GameState.LIVE){
+            state = GameState.FINISHED;
         }
         players.clear();
         state = GameState.QUEUEING;
