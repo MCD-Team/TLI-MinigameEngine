@@ -67,7 +67,6 @@ public class Arena {
         if(state.equals(GameState.QUEUEING) &&players.size()>= ConfigManager.getRequiredPlayers()&&players.size()<=ConfigManager.getMaxPlayers()){
             countdown.start();
             sendMessage("Enough players have joined starting countdown");
-
         }
     }
     public Testgame getGame(){
@@ -86,17 +85,22 @@ public class Arena {
                 sendMessage("To many people have left kicking all players in ");
                 kickPlayers();
             }
-            return;
         }
     }
     public void setState(GameState state){
         this.state = state;
     }
+    //make sure message is not empty to prevent nullPointerException then loop over the players in the arena and send the message
     public void sendMessage(String message){
-        for(UUID uuid : players){
-            Bukkit.getPlayer(uuid).sendMessage(message);
+        if(!message.isEmpty()){
+            for(UUID uuid : players){
+                Bukkit.getPlayer(uuid).sendMessage(message);
+            }
+        }else{
+            System.out.println("Message is empty");
         }
     }
+    //all ints are put in are counted in game ticks
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut){
         for(UUID uuid : players){
             Bukkit.getPlayer(uuid).sendTitle(title, subtitle, fadeIn, stay, fadeOut);
@@ -107,21 +111,22 @@ public class Arena {
             Bukkit.getPlayer(uuid).teleport(ConfigManager.getLobbyLocation());
         }
     }
-    public static BossBar addBossbar(List<Player> players, String Title, BarColor color, BarStyle style){
-        BossBar bossbar = Bukkit.createBossBar(Title, color, style);
+    public static void addBossbar(List<UUID> uuids,BossBar bossBar){
+        final List<Player>players = new ArrayList<>();
+        for(UUID uuid: uuids){
+            players.add(Bukkit.getPlayer(uuid));
+        }
         for(Player p : players){
             if(p != null){
-                bossbar.addPlayer(p);
+                bossBar.addPlayer(p);
             }
         }
-        return bossbar;
     }
-    public static void removeBossbar(List<Player> players,BossBar bossbar){
-        for(Player p : players){
-            if(p != null){
-                bossbar.removePlayer(p);
-            }
-        }
+    public static BossBar createBossbar(String Title, BarColor color, BarStyle style){
+       return Bukkit.createBossBar(Title, color, style);
+    }
+    public static void removeBossbar(BossBar bossbar){
+        bossbar.removeAll();
     }
     public static void teleportPlayers(List<UUID> players, Location location){
         for(UUID p : players){
