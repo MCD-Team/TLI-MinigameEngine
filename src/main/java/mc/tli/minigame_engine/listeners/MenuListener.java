@@ -19,23 +19,26 @@ public class MenuListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent event){
         Player player = event.getPlayer();
-        if(event.getItem().getItemMeta().getDisplayName().equals("Join Game")){
-            List<Arena> Arenas =  plugin.getArenaManager().getArenas();
-            if(Arenas != null){
-                if(!Arenas.isEmpty()){
-                    for(Arena arena : Arenas){
-                        //check if the arena is queing or countdown and if the max player count hase NOT been reached then add the player
-                        if(arena.getState() == GameState.QUEUEING || arena.getState() == GameState.COUNTINGDOWN && arena.getPlayers().size() <= ConfigManager.getMaxPlayers()){
-                            arena.addPlayer(player);
-                        }else{
-                            player.sendMessage(ChatColor.RED + "An error hase occured please try again");
-                            return;
+        if(!(event.getItem() == null)){
+            if(event.getItem().getItemMeta().getDisplayName().equals("Join Game")){
+                List<Arena> Arenas =  plugin.getArenaManager().getArenas();
+                if(Arenas != null){
+                    if(!Arenas.isEmpty()){
+                        for(Arena arena : Arenas){
+                            //check if the arena is queueing or countdown and if the max player count hase NOT been reached then add the player
+                            if(arena.getState() == GameState.QUEUEING || arena.getState() == GameState.COUNTINGDOWN && arena.getPlayers().size() <= ConfigManager.getMaxPlayers()){
+                                arena.addPlayer(player);
+                            }else{
+                                player.sendMessage(ChatColor.RED + "An error hase occurred please try again");
+                                return;
+                            }
                         }
+                    }else{
+                        player.sendMessage(ChatColor.RED + "No arenas found making arena try again");
                     }
-                }else{
-                    player.sendMessage(ChatColor.RED + "No arenas found making arena try again");
                 }
             }
         }
+
     }
 }

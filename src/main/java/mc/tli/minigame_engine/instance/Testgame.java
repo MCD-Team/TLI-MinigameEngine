@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Testgame implements Listener {
     private boolean isPlayerRemoved = false;
     private final Arena arena;
-    private HashMap<UUID,Integer> points;
+    private final HashMap<UUID,Integer> points = new HashMap<>();
     public Testgame(Arena arena) {
         this.arena = arena;
     }
@@ -30,7 +30,7 @@ public class Testgame implements Listener {
             arena.sendMessage(ChatColor.RED + player.getName()+ "has won");
 //           TO DO arena.reset(isPlayerRemoved,false);
         }else{
-            player.sendMessage(ChatColor.RED+"+1 point u now have"+points.toString()+"points");
+            player.sendMessage(ChatColor.RED+"+1 point u now have"+playerPoints+"points");
             points.replace(player.getUniqueId(),playerPoints);
         }
     }

@@ -16,8 +16,7 @@ public class GameCommand implements CommandExecutor {
     }
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        if(commandSender instanceof Player) {
-            Player player = (Player) commandSender;
+        if(commandSender instanceof Player player) {
             Arena arena = plugin.getArenaManager().getArena(player);
             //check if there is 1 argument given and if the string given contains leave then remove the player from the arena
             if (args.length == 1 && args[0].equalsIgnoreCase("leave")) {

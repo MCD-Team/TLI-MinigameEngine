@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class banUser implements CommandExecutor {
-    private final TliMinigameEngine main;
+    private TliMinigameEngine main;
     public banUser(TliMinigameEngine main) {
         this.main = main;
     }
