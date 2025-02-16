@@ -43,7 +43,7 @@ public class banUser implements CommandExecutor {
                     target.banPlayerIP(args[1]);
                     target.kickPlayer(args[1]);
                     testgame.setPlayerRemoved(true);
-                    commandSender.sendMessage(ChatColor.GREEN + "Player is now banned");
+                    commandSender.sendMessage(ChatColor.GREEN +target.name().toString()+ " is now banned");
                     return true;
                 }
 
