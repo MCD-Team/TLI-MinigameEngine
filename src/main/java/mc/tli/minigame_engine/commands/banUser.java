@@ -24,6 +24,10 @@ public class banUser implements CommandExecutor {
         if(commandSender instanceof Player){
             //get the arena bassed of the command sender
             Arena arena = arenaManager.getArena((Player) commandSender);
+            if(arena == null){
+                commandSender.sendMessage(ChatColor.RED + "No arena found.");
+                return true;
+            }
             Testgame testgame = arena.getGame();
             if(args.length != 0) {
                 if(args.length< 2){
@@ -47,6 +51,8 @@ public class banUser implements CommandExecutor {
                     return true;
                 }
 
+            }else{
+                commandSender.sendMessage(ChatColor.RED + "Usage: /ban player reason");
             }
         }else{
             commandSender.sendMessage(ChatColor.RED + "Only players can use this command");
