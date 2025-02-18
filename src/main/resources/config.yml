@@ -5,16 +5,16 @@ error-prefix: '&f[&cError&f]&r'
 success-prefix: '&f[&Success&f]&r'
 lobby-spawn:
   world: 'world'
-  x: 0
-  y: 64
-  z: 0
+  x: 233
+  y: 134
+  z: -102
   yaw: -180
   pitch: 0
 arenas:
   0:
     world: 'minigame'
-    x: 0
-    y: 64
-    z: 0
+    x: 233
+    y: 134
+    z: -102
     yaw: 180
     pitch: 0
