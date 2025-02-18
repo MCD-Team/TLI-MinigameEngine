@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class ArenaManager {
-    private List<Arena> arenas = new ArrayList<>();
-    private TliMinigameEngine plugin;
+    private final List<Arena> arenas = new ArrayList<>();
+    private final TliMinigameEngine plugin;
     public ArenaManager(TliMinigameEngine main) {
         this.plugin = main;
 
@@ -30,6 +30,9 @@ public class ArenaManager {
                     (float)config.getDouble("arenas."+str+".yaw"),
                     (float)config.getDouble("arenas."+str+".pitch"))
                     ,plugin));
+        }
+        if(arenas.isEmpty()) {
+            System.out.println("No arena created due to missing config");
         }
     }
     public List<Arena> getArenas() {return arenas;}
