@@ -9,10 +9,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -21,20 +24,21 @@ public class MenuListener implements Listener {
     public MenuListener(TliMinigameEngine plugin) {
         this.plugin = plugin;
     }
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event){
-        if(event.getHand() == null || !event.getHand().equals(EquipmentSlot.HAND)){
+        Player player = event.getPlayer();
+        ItemStack mainHandItem = player.getInventory().getItemInMainHand();
+        if(mainHandItem.getType() == Material.AIR){
+            System.out.println("Item in main hand is not a compass");
             return;
         }
-        Player player = event.getPlayer();
         player.sendMessage("Open menu");
-      if(event.getHand().equals(EquipmentSlot.HAND)){
-            if(player.getInventory().getItemInMainHand() != null&& player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)){
+        if(player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)){
 //                FIX THIS METHOD UTILLITIES method is broken
-//                player.openInventory(guis.TestGame(player));
-            }
-        }
+            System.out.println("Open menu");
+            player.openInventory(guis.TestGame(player));
 
+        }
     }
     @EventHandler
     public void onClick(InventoryClickEvent event){
