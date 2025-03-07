@@ -21,6 +21,9 @@ public class ArenaManager {
     public void addArena()
     {
         FileConfiguration config = plugin.getConfig();
+        if(config != null){
+            System.out.println("Config is not null");
+        }
         for(String str: Objects.requireNonNull(config.getConfigurationSection("arenas")).getKeys(false)) {
             arenas.add(new Arena(Integer.parseInt(str),new Location(
                     Bukkit.getWorld(config.getString("arenas."+str+".world")),

@@ -15,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -32,11 +33,13 @@ public class MenuListener implements Listener {
             System.out.println("Item in main hand is not a compass");
             return;
         }
+
         player.sendMessage("Open menu");
+        Inventory selector = guis.TestGame(player);
         if(player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)){
 //                FIX THIS METHOD UTILLITIES method is broken
             System.out.println("Open menu");
-            player.openInventory(guis.TestGame(player));
+            player.openInventory(selector);
 
         }
     }

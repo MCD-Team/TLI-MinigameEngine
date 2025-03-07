@@ -14,13 +14,18 @@ public final class TliMinigameEngine extends JavaPlugin {
     private ArenaManager arenamanger;
     @Override
     public void onEnable() {
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
+        try{
+            ConfigManager.initConfig(this);
+        }catch(NullPointerException e){
+            System.out.println("Error initializing config");
+        }
+
         utils = (Utils)Bukkit.getServer().getPluginManager().getPlugin("TLI-Utils");
         this.arenamanger = new ArenaManager(this);
         arenamanger.addArena();
-        //initialize the config
-        getConfig().options().copyDefaults(true);
-        saveDefaultConfig();
-        ConfigManager.initConfig(this);
+
         //register commands
         getCommand("moderationban").setExecutor(new banUser(this));
         getCommand("game").setExecutor(new GameCommand(this));

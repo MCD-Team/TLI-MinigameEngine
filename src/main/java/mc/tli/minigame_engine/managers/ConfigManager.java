@@ -6,9 +6,21 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class ConfigManager {
-    private  static FileConfiguration config;
-    public static void initConfig(TliMinigameEngine main) {
-        ConfigManager.config = main.getConfig();
+    private static FileConfiguration config;
+    public ConfigManager (TliMinigameEngine main){
+        config = main.getConfig();
+    }
+    public static void initConfig(TliMinigameEngine main){
+
+        if(!main.getDataFolder().exists()){
+            main.getDataFolder().mkdir();
+        }
+
+        if(config == null){
+            System.out.println("Config is null");
+            main.reloadConfig();
+            config = main.getConfig();
+        }
         main.saveConfig();
     }
     public static int getPlayerTreshold(){return config.getInt("playerTreshold");}
