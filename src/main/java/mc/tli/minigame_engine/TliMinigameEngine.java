@@ -12,18 +12,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class TliMinigameEngine extends JavaPlugin {
     public static Utils utils;
     private ArenaManager arenamanger;
+    private ConfigManager configmanager;
     @Override
     public void onEnable() {
+        this.arenamanger = new ArenaManager(this);
+        this.configmanager = new ConfigManager(this);
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
         try{
-            ConfigManager.initConfig(this);
+            configmanager.initConfig(this);
         }catch(NullPointerException e){
             System.out.println("Error initializing config");
         }
-
         utils = (Utils)Bukkit.getServer().getPluginManager().getPlugin("TLI-Utils");
-        this.arenamanger = new ArenaManager(this);
         arenamanger.addArena();
 
         //register commands
