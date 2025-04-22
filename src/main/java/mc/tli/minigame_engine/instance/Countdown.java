@@ -13,10 +13,12 @@ public class Countdown extends BukkitRunnable {
     private final Arena arena;
     private int countdownSeconds;
     private final BossBar  bossBar = Arena.createBossbar("Game starting in...",BarColor.RED,BarStyle.SOLID);
+    private final ConfigManager configManager;
     public Countdown(TliMinigameEngine main, Arena arena) {
+        this.configManager = new ConfigManager(main);
         this.main = main;
         this.arena = arena;
-        this.countdownSeconds = ConfigManager.getCountDownSeconds();
+        this.countdownSeconds = configManager.getCountDownSeconds();
     }
 //set the arena state to countingdown and teleport all players currently in the arena
     public void start() {
@@ -34,7 +36,7 @@ public class Countdown extends BukkitRunnable {
             return;
         }
         bossBar.setTitle("Game starting in " + countdownSeconds + " seconds");
-        bossBar.setProgress(countdownSeconds / (double) ConfigManager.getCountDownSeconds());
+        bossBar.setProgress(countdownSeconds / (double) configManager.getCountDownSeconds());
         countdownSeconds--;
     }
 }

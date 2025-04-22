@@ -25,7 +25,9 @@ public class Arena {
     private Testgame testgame;
     private final TliMinigameEngine minigame;
     private final banUser banCommand;
+    private final ConfigManager configManager;
     public Arena(int id, Location spawn, TliMinigameEngine minigame) {
+        this.configManager = new ConfigManager(minigame);
         this.id = id;
         this.spawn = spawn;
         this.state = GameState.QUEUEING;
@@ -43,10 +45,10 @@ public class Arena {
         if(isPlayerRemoved)
         {
             //TO DO add title screen and stop the game
-            teleportPlayers(players,ConfigManager.getLobbyLocation());
+            teleportPlayers(players,configManager.getLobbyLocation());
         }
         if(kickPlayers){
-            teleportPlayers(players,ConfigManager.getLobbyLocation());
+            teleportPlayers(players,configManager.getLobbyLocation());
         }
         if(state == GameState.LIVE){
             state = GameState.FINISHED;
@@ -64,7 +66,7 @@ public class Arena {
     public void addPlayer(Player player){
         players.add(player.getUniqueId());
         player.teleport(spawn);
-        if(state.equals(GameState.QUEUEING) &&players.size()>= ConfigManager.getRequiredPlayers()&&players.size()<=ConfigManager.getMaxPlayers()){
+        if(state.equals(GameState.QUEUEING) &&players.size()>= configManager.getRequiredPlayers()&&players.size()<=configManager.getMaxPlayers()){
             countdown.start();
             sendMessage("Enough players have joined starting countdown");
         }
@@ -74,14 +76,14 @@ public class Arena {
     }
     public void removePlayer(Player player){
         players.remove(player.getUniqueId());
-        player.teleport(ConfigManager.getLobbyLocation());
-        if(state.equals(GameState.COUNTINGDOWN)&&players.size()<ConfigManager.getRequiredPlayers()){
+        player.teleport(configManager.getLobbyLocation());
+        if(state.equals(GameState.COUNTINGDOWN)&&players.size()<configManager.getRequiredPlayers()){
             sendMessage("To many players have left canceling countdown");
             countdown.cancel();
             return;
         }
         if(state.equals(GameState.LIVE)){
-            if (players.size()< ConfigManager.getPlayerTreshold()) {
+            if (players.size()<configManager.getPlayerTreshold()) {
                 sendMessage("To many people have left kicking all players in ");
                 kickPlayers();
             }
@@ -108,7 +110,7 @@ public class Arena {
     }
     public void kickPlayers(){
         for(UUID uuid : players){
-            Bukkit.getPlayer(uuid).teleport(ConfigManager.getLobbyLocation());
+            Bukkit.getPlayer(uuid).teleport(configManager.getLobbyLocation());
         }
     }
     public static void addBossbar(List<UUID> uuids,BossBar bossBar){
