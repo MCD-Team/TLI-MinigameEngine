@@ -37,7 +37,7 @@ public class MenuListener implements Listener {
         player.sendMessage("Open menu");
         Inventory selector = guis.TestGame(player);
         if(player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)){
-//                FIX THIS METHOD UTILLITIES method is broken
+
             System.out.println("Open menu");
             player.openInventory(selector);
 
