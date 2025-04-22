@@ -1,6 +1,8 @@
 package mc.tli.minigame_engine.listeners;
 
+import mc.tLIUtils.Utils;
 import mc.tLIUtils.guis;
+import mc.tLIUtils.utilities;
 import mc.tli.minigame_engine.GameState;
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.instance.Arena;
@@ -44,9 +46,9 @@ public class MenuListener implements Listener {
     }
     @EventHandler
     public void onClick(InventoryClickEvent event){
-        if(ChatColor.stripColor(event.getView().getTitle()).equals("Test") && event.getCurrentItem() != null){
+        String menuTitle = event.getView().getTitle();
+        if(utilities.removeColourCodes(menuTitle).equals("Test") && event.getCurrentItem() != null){
             event.setCancelled(true);
-            System.out.println("Clicked in menu");
             Player player = (Player) event.getWhoClicked();
             switch(event.getRawSlot()){
                 case 22:
