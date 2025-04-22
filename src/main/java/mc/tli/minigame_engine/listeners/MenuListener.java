@@ -37,7 +37,6 @@ public class MenuListener implements Listener {
         player.sendMessage("Open menu");
         Inventory selector = guis.TestGame(player);
         if(player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)){
-
             System.out.println("Open menu");
             player.openInventory(selector);
 
@@ -45,8 +44,9 @@ public class MenuListener implements Listener {
     }
     @EventHandler
     public void onClick(InventoryClickEvent event){
-        if(ChatColor.translateAlternateColorCodes('&', event.getView().getTitle()).equals("Join game") && event.getCurrentItem() != null){
+        if(ChatColor.stripColor(event.getView().getTitle()).equals("Test") && event.getCurrentItem() != null){
             event.setCancelled(true);
+            System.out.println("Clicked in menu");
             Player player = (Player) event.getWhoClicked();
             switch(event.getRawSlot()){
                 case 22:
