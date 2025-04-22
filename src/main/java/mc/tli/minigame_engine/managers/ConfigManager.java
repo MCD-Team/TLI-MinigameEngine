@@ -6,29 +6,31 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class ConfigManager {
-    private static FileConfiguration config;
+    private FileConfiguration config;
     public ConfigManager (TliMinigameEngine main){
         config = main.getConfig();
     }
-    public static void initConfig(TliMinigameEngine main){
+    public void initConfig(TliMinigameEngine main){
 
         if(!main.getDataFolder().exists()){
             main.getDataFolder().mkdir();
         }
 
-        if(config == null){
+        if(this.config == null){
             System.out.println("Config is null");
             main.reloadConfig();
             config = main.getConfig();
+        }else{
+            System.out.println("Config is NOT null");
         }
         main.saveConfig();
     }
-    public static int getPlayerTreshold(){return config.getInt("playerTreshold");}
-    public static int getKickCountdown(){return config.getInt("kickCountdown");}
-    public static int getRequiredPlayers(){return config.getInt("required-players");}
-    public static int getMaxPlayers(){return config.getInt("max-players");}
-    public static int getCountDownSeconds(){return config.getInt("countdown-seconds");}
-    public static Location getLobbyLocation(){
+    public  int getPlayerTreshold(){return config.getInt("playerTreshold");}
+    public  int getKickCountdown(){return config.getInt("kickCountdown");}
+    public  int getRequiredPlayers(){return config.getInt("required-players");}
+    public  int getMaxPlayers(){return config.getInt("max-players");}
+    public  int getCountDownSeconds(){return config.getInt("countdown-seconds");}
+    public  Location getLobbyLocation(){
         return new Location(
                 Bukkit.getWorld(config.getString("lobby-spawn.world")),
                 config.getDouble("lobby-spawn.x"),
