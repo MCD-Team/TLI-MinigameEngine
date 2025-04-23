@@ -36,8 +36,6 @@ public class MenuListener implements Listener {
             System.out.println("Item in main hand is not a compass");
             return;
         }
-
-        player.sendMessage("Open menu");
         Inventory selector = guis.TestGame(player);
         if(player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)){
             System.out.println("Open menu");
@@ -47,7 +45,6 @@ public class MenuListener implements Listener {
     }
     @EventHandler
     public void onClick(InventoryClickEvent event){
-        event.setCancelled(true);
         String menuTitle = event.getView().getTitle();
         if(utilities.removeColourCodes(menuTitle).equals("Test") && event.getCurrentItem() != null){
             Player player = (Player) event.getWhoClicked();
