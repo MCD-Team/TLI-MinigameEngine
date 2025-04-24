@@ -12,13 +12,16 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class Arena {
     private final int id;
-    private final Location arenaSpawn;
+    private final Location spawn;
     private Countdown countdown;
     private GameState state;
     private final List<UUID> players;
@@ -26,19 +29,19 @@ public class Arena {
     private final TliMinigameEngine minigame;
     private final banUser banCommand;
     private final ConfigManager configManager;
-    public Arena(int id, Location arenaSpawn, TliMinigameEngine minigame) {
+    public Arena(int id, Location spawn, TliMinigameEngine minigame) {
         this.configManager = new ConfigManager(minigame);
         this.id = id;
-        this.arenaSpawn = arenaSpawn;
+        this.spawn = spawn;
         this.state = GameState.QUEUEING;
-        this.players = new ArrayList<>();
+        this.players = new ArrayList<UUID>();
         this.countdown = new Countdown(minigame,this);
         this.testgame = new Testgame(this);
         this.minigame = minigame;
         this.banCommand = new banUser(minigame);
     }
     public void startGame(){
-        testgame.StartGame();
+        testgame.start();
     }
     public void reset(boolean isPlayerRemoved,boolean kickPlayers){
 //  player hase been removed do magic dion wants
@@ -65,9 +68,8 @@ public class Arena {
 
     public void addPlayer(Player player){
         players.add(player.getUniqueId());
-        System.out.println("Player added to arena at:" + arenaSpawn);
-        player.teleport(arenaSpawn);
-        if(state.equals(GameState.QUEUEING) && players.size()>= configManager.getRequiredPlayers()&&players.size()<=configManager.getMaxPlayers()){
+        player.teleport(spawn);
+        if(state.equals(GameState.QUEUEING) &&players.size()>= configManager.getRequiredPlayers()&&players.size()<=configManager.getMaxPlayers()){
             countdown.start();
             sendMessage("Enough players have joined starting countdown");
         }
@@ -146,4 +148,70 @@ public class Arena {
         }
     }
 
+    private static String copyDirectory(Path source, Path target) throws IOException {
+        Files.walkFileTree(source, new SimpleFileVisitor<>() {
+            // Maak elke subdirectory aan vóórdat we de bestanden erin kopiëren
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                Path targetDir = target.resolve(source.relativize(dir));
+                Files.createDirectories(targetDir);
+                return FileVisitResult.CONTINUE;
+            }
+
+            // Kopieer elk bestand; overschrijf als het al bestaat
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Path targetFile = target.resolve(source.relativize(file));
+                Files.copy(file, targetFile,
+                        StandardCopyOption.REPLACE_EXISTING,
+                        StandardCopyOption.COPY_ATTRIBUTES);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+
+        return target.getFileName().toString();
+    }
+
+    public static String createArena(String nameArena) throws IOException {
+        // Generate a random ID for the arena
+        int randomArenaID = (int)(Math.random() * 5) + 1;
+
+        // Generate a random ID for the target arena
+        int randomArenaID2 = (int)(Math.random() * 42);
+
+        // Source location within worlds/arenas directory
+        Path source = Paths.get("worlds/arenas/" + nameArena + "-" + randomArenaID);
+
+        // Target location within worlds directory
+        // This will copy to: worlds/[nameArena-randomArenaID]
+        Path target = Paths.get("worlds/" + nameArena + "-" + randomArenaID2);
+
+
+        // Checks if the directory in /worlds/arenas/ exists if not it returns a IOException
+        if (!Files.exists(source)) {
+            throw new IOException("Source arena doesn't exist: " + source);
+        }
+
+        // If the directory already exists with the same ID it will generate a new ID with a while loop
+        if (Files.exists(target)) {
+            while (Files.exists(target)) {
+                //System.out.println("Target: " + target + " already exists, generating a new ID...");
+                // Generate a new random ID until we find a non-existing target
+                randomArenaID2 = (int) (Math.random() * 100);
+                target = Paths.get("worlds/" + nameArena + "-" + randomArenaID2);
+            }
+        }
+
+        // Create target directory if it doesn't exist
+        Files.createDirectories(target.getParent());
+
+        // Copies the directory and capture the arena name
+        String arenaName = nameArena + "-" + randomArenaID2;
+        copyDirectory(source, target);
+
+        System.out.println("Arena copied: " + source);
+
+        // Print the target directory for the Queue System to place them in the correct world
+        return arenaName;
+    }
 }
