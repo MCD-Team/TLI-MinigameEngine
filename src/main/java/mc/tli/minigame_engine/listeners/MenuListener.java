@@ -1,5 +1,5 @@
 package mc.tli.minigame_engine.listeners;
-
+//this class is used to handle the menu for the mini-game engine
 import mc.tLIUtils.guis;
 import mc.tLIUtils.utilities;
 
@@ -8,7 +8,8 @@ import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.instance.Arena;
 import mc.tli.minigame_engine.managers.ConfigManager;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,10 +25,12 @@ import java.util.List;
 public class MenuListener implements Listener {
     private final TliMinigameEngine plugin;
     private final ConfigManager configManager;
+
     public MenuListener(TliMinigameEngine plugin) {
         this.plugin = plugin;
         this.configManager = new ConfigManager(plugin);
     }
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event){
         Player player = event.getPlayer();
@@ -36,16 +39,18 @@ public class MenuListener implements Listener {
             System.out.println("Item in main hand is not a compass");
             return;
         }
+        //get the TestGame inventory from guis from the utils plugin
         Inventory selector = guis.TestGame(player);
         if(player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)){
             System.out.println("Open menu");
             player.openInventory(selector);
-
         }
     }
+    //this method is used to handle the click events in the menu
     @EventHandler
     public void onClick(InventoryClickEvent event){
-        String menuTitle = event.getView().getTitle();
+
+        String menuTitle =  event.getView().title().toString();
         if(utilities.removeColourCodes(menuTitle).equals("Test") && event.getCurrentItem() != null){
             Player player = (Player) event.getWhoClicked();
             switch(event.getRawSlot()){
@@ -58,12 +63,12 @@ public class MenuListener implements Listener {
                                 if(arena.getState() == GameState.QUEUEING || arena.getState() == GameState.COUNTINGDOWN && arena.getPlayers().size() <= configManager.getMaxPlayers()){
                                     arena.addPlayer(player);
                                 }else{
-                                    player.sendMessage(ChatColor.RED + "An error hase occurred please try again");
+                                    player.sendMessage(NamedTextColor.RED + "An error hase occurred please try again");
                                     return;
                                 }
                             }
                         }else{
-                            player.sendMessage(ChatColor.RED + "No arenas found making arena try again");
+                            player.sendMessage(NamedTextColor.RED + "No arenas found making arena try again");
                         }
                     }
                     break;
