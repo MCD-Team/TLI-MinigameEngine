@@ -1,10 +1,11 @@
 package mc.tli.minigame_engine.instance;
 //The arena class holds all methods related to arena's it holds players and the game state
+
 import mc.tli.minigame_engine.GameState;
 import mc.tli.minigame_engine.managers.ConfigManager;
-
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.commands.banUser;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
