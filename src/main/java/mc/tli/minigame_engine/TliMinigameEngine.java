@@ -11,13 +11,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 public final class TliMinigameEngine extends JavaPlugin {
     public static Utils utils;
     private ArenaManager arenamanger;
     private ConfigManager configmanager;
+    public static Logger logger;
+
     @Override
     public void onEnable() {
+        logger = this.getLogger();
         this.arenamanger = new ArenaManager(this);
         this.configmanager = new ConfigManager(this);
         Bukkit.getScheduler().runTask(this, () -> {
