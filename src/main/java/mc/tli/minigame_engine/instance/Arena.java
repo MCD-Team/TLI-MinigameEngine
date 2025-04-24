@@ -18,10 +18,12 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class Arena {
-    private final int id;
+    private final Integer id;
     private final Location arenaSpawn;
     private Countdown countdown;
     private GameState state;
@@ -30,6 +32,7 @@ public class Arena {
     private final TliMinigameEngine minigame;
     private final banUser banCommand;
     private final ConfigManager configManager;
+
     //constructor to get the id and the spawn location of the arena and a reference to the main class
     public Arena(int id, Location arenaSpawn, TliMinigameEngine minigame) {
         this.configManager = new ConfigManager(minigame);
@@ -41,6 +44,7 @@ public class Arena {
         this.testgame = new Testgame(this);
         this.minigame = minigame;
         this.banCommand = new banUser(minigame);
+
     }
 
     public void startGame(){
@@ -67,17 +71,18 @@ public class Arena {
         testgame = new Testgame(this);
     }
 
-
+    //adds player to the arena and teleports them to the spawn location
     public void addPlayer(Player player){
         players.add(player.getUniqueId());
         System.out.println("Player added to arena at:" + arenaSpawn);
         player.teleport(arenaSpawn);
-        if(state.equals(GameState.QUEUEING) && players.size()>= configManager.getRequiredPlayers()&&players.size()<=configManager.getMaxPlayers()){
+        if(state.equals(GameState.QUEUEING) && players.size() >= configManager.getRequiredPlayers() && players.size() <= configManager.getMaxPlayers()){
             countdown.start();
             sendMessage("Enough players have joined starting countdown");
         }
     }
 
+    //removes player from the arena and teleports them to the lobby location
     public void removePlayer(Player player){
         players.remove(player.getUniqueId());
         player.teleport(configManager.getLobbyLocation());
@@ -94,9 +99,6 @@ public class Arena {
         }
     }
 
-    public void setState(GameState state){
-        this.state = state;
-    }
 
     //make sure message is not empty to prevent nullPointerException then loop over the players in the arena and send the message
     public void sendMessage(String message){
@@ -109,19 +111,27 @@ public class Arena {
         }
     }
 
-    //all ints are put in are counted in game ticks
+    //all Integers are put in are counted in game ticks
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut){
         for(UUID uuid : players){
             Bukkit.getPlayer(uuid).sendTitle(title, subtitle, fadeIn, stay, fadeOut);
         }
     }
 
+    //kick all players in the arena and teleport them to the lobby location
     public void kickPlayers(){
         for(UUID uuid : players){
+            if(Bukkit.getPlayer(uuid) == null){
+                System.out.println("Player is null skipping player");
+                continue;
+            }
+
+            removePlayer(Objects.requireNonNull(Bukkit.getPlayer(uuid)));
             Bukkit.getPlayer(uuid).teleport(configManager.getLobbyLocation());
         }
     }
 
+    //adds a bossbar to the players in the arena
     public static void addBossbar(List<UUID> uuids,BossBar bossBar){
         final List<Player>players = new ArrayList<>();
         for(UUID uuid: uuids){
@@ -134,22 +144,30 @@ public class Arena {
         }
     }
 
+    //method to create a bossbar in Don't Repeat Yourself friendly way
     public static BossBar createBossbar(String Title, BarColor color, BarStyle style){
        return Bukkit.createBossBar(Title, color, style);
     }
 
+    //method to remove the bossbar from all players in the arena
     public static void removeBossbar(BossBar bossbar){
         bossbar.removeAll();
     }
 
+    //method to teleport all players in the arena to a location
     public static void teleportPlayers(List<UUID> players, Location location){
+        if(location == null){
+            System.out.println("Location is null skipping teleport");
+            return;
+        }
         for(UUID p : players){
             if(p != null){
-                Bukkit.getPlayer(p).teleport(location);
+                Objects.requireNonNull(Bukkit.getPlayer(p)).teleport(location);
             }
         }
     }
 
+    //method to add a Title to all players in the arena (all Integers are in game ticks)
     public static void addTitle(List<Player>players,String Title,String subText,int fadeIn,int stayTime,int fadeOut){
         for(Player p : players){
             if(p != null){
@@ -158,72 +176,7 @@ public class Arena {
         }
     }
 
-    private static String copyDirectory(Path source, Path target) throws IOException {
-        Files.walkFileTree(source, new SimpleFileVisitor<>() {
-            // Maak elke subdirectory aan vóórdat we de bestanden erin kopiëren
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                Path targetDir = target.resolve(source.relativize(dir));
-                Files.createDirectories(targetDir);
-                return FileVisitResult.CONTINUE;
-            }
-
-            // Kopieer elk bestand; overschrijf als het al bestaat
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                Path targetFile = target.resolve(source.relativize(file));
-                Files.copy(file, targetFile,
-                        StandardCopyOption.REPLACE_EXISTING,
-                        StandardCopyOption.COPY_ATTRIBUTES);
-                return FileVisitResult.CONTINUE;
-            }
-        });
-
-        return target.getFileName().toString();
-    }
-
-    public static String createArena(String nameArena) throws IOException {
-        // Generate a random ID for the arena
-        int randomArenaID = (int)(Math.random() * 5) + 1;
-
-        // Generate a random ID for the target arena
-        int randomArenaID2 = (int)(Math.random() * 42);
-
-        // Source location within worlds/arenas directory
-        Path source = Paths.get("worlds/arenas/" + nameArena + "-" + randomArenaID);
-
-        // Target location within worlds directory
-        // This will copy to: worlds/[nameArena-randomArenaID]
-        Path target = Paths.get("worlds/" + nameArena + "-" + randomArenaID2);
-
-
-        // Checks if the directory in /worlds/arenas/ exists if not it returns a IOException
-        if (!Files.exists(source)) {
-            throw new IOException("Source arena doesn't exist: " + source);
-        }
-
-        // If the directory already exists with the same ID it will generate a new ID with a while loop
-        if (Files.exists(target)) {
-            while (Files.exists(target)) {
-                //System.out.println("Target: " + target + " already exists, generating a new ID...");
-                // Generate a new random ID until we find a non-existing target
-                randomArenaID2 = (int) (Math.random() * 100);
-                target = Paths.get("worlds/" + nameArena + "-" + randomArenaID2);
-            }
-        }
-
-        // Create target directory if it doesn't exist
-        Files.createDirectories(target.getParent());
-
-        // Copies the directory and capture the arena name
-        String arenaName = nameArena + "-" + randomArenaID2;
-        copyDirectory(source, target);
-
-        System.out.println("Arena copied: " + source);
-
-        // Print the target directory for the Queue System to place them in the correct world
-        return arenaName;
-    }
+    //getters
     public int getId(){
         return id;
     }
@@ -238,5 +191,10 @@ public class Arena {
 
     public Testgame getGame(){
         return testgame;
+    }
+    //setters
+    //set's the arena state based on the GAMESTATE enum
+    public void setState(GameState state){
+        this.state = state;
     }
 }
