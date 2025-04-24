@@ -66,9 +66,6 @@ public class Arena {
         testgame = new Testgame(this);
     }
 
-    public int getId(){return id;}
-    public GameState getState(){return state;}
-    public List<UUID> getPlayers(){return players;}
 
     public void addPlayer(Player player){
         players.add(player.getUniqueId());
@@ -79,9 +76,7 @@ public class Arena {
             sendMessage("Enough players have joined starting countdown");
         }
     }
-    public Testgame getGame(){
-        return testgame;
-    }
+
     public void removePlayer(Player player){
         players.remove(player.getUniqueId());
         player.teleport(configManager.getLobbyLocation());
@@ -97,9 +92,11 @@ public class Arena {
             }
         }
     }
+
     public void setState(GameState state){
         this.state = state;
     }
+
     //make sure message is not empty to prevent nullPointerException then loop over the players in the arena and send the message
     public void sendMessage(String message){
         if(!message.isEmpty()){
@@ -110,17 +107,20 @@ public class Arena {
             System.out.println("Message is empty");
         }
     }
+
     //all ints are put in are counted in game ticks
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut){
         for(UUID uuid : players){
             Bukkit.getPlayer(uuid).sendTitle(title, subtitle, fadeIn, stay, fadeOut);
         }
     }
+
     public void kickPlayers(){
         for(UUID uuid : players){
             Bukkit.getPlayer(uuid).teleport(configManager.getLobbyLocation());
         }
     }
+
     public static void addBossbar(List<UUID> uuids,BossBar bossBar){
         final List<Player>players = new ArrayList<>();
         for(UUID uuid: uuids){
@@ -132,12 +132,15 @@ public class Arena {
             }
         }
     }
+
     public static BossBar createBossbar(String Title, BarColor color, BarStyle style){
        return Bukkit.createBossBar(Title, color, style);
     }
+
     public static void removeBossbar(BossBar bossbar){
         bossbar.removeAll();
     }
+
     public static void teleportPlayers(List<UUID> players, Location location){
         for(UUID p : players){
             if(p != null){
@@ -145,6 +148,7 @@ public class Arena {
             }
         }
     }
+
     public static void addTitle(List<Player>players,String Title,String subText,int fadeIn,int stayTime,int fadeOut){
         for(Player p : players){
             if(p != null){
@@ -218,5 +222,20 @@ public class Arena {
 
         // Print the target directory for the Queue System to place them in the correct world
         return arenaName;
+    }
+    public int getId(){
+        return id;
+    }
+
+    public GameState getState(){
+        return state;
+    }
+
+    public List<UUID> getPlayers(){
+        return players;
+    }
+
+    public Testgame getGame(){
+        return testgame;
     }
 }
