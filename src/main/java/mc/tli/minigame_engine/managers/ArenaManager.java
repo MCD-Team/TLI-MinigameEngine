@@ -4,6 +4,7 @@ import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.instance.Arena;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -24,9 +25,15 @@ public class ArenaManager {
         if(config != null){
             System.out.println("Config is not null");
         }
+
         for(String str: Objects.requireNonNull(config.getConfigurationSection("arenas")).getKeys(false)) {
+            World world = Bukkit.getWorld(Objects.requireNonNull(config.getString("arenas." + str + ".world")));
+            if(world == null) {
+                plugin.getLogger().warning("Arenas world null");
+                return;
+            }
             arenas.add(new Arena(Integer.parseInt(str),new Location(
-                    Bukkit.getWorld(config.getString("arenas."+str+".world")),
+                    world,
                     config.getDouble("arenas."+str+".x"),
                     config.getDouble("arenas."+str+".y"),
                     config.getDouble("arenas."+str+".z"),
