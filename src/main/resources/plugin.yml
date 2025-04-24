@@ -2,7 +2,7 @@ name: TLI-Minigame-Engine
 version: '1.0-SNAPSHOT'
 main: mc.tli.minigame_engine.TliMinigameEngine
 api-version: '1.20'
-load: STARTUP
+load: POSTWORLD
 authors: [ Royboot ]
 commands:
   moderationban:
