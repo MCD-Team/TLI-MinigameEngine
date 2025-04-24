@@ -1,5 +1,5 @@
 package mc.tli.minigame_engine.instance;
-
+//The arena class holds all methods related to arena's it holds players and the game state
 import mc.tli.minigame_engine.GameState;
 import mc.tli.minigame_engine.managers.ConfigManager;
 
@@ -26,6 +26,7 @@ public class Arena {
     private final TliMinigameEngine minigame;
     private final banUser banCommand;
     private final ConfigManager configManager;
+    //constructor to get the id and the spawn location of the arena and a reference to the main class
     public Arena(int id, Location arenaSpawn, TliMinigameEngine minigame) {
         this.configManager = new ConfigManager(minigame);
         this.id = id;
@@ -37,9 +38,11 @@ public class Arena {
         this.minigame = minigame;
         this.banCommand = new banUser(minigame);
     }
+
     public void startGame(){
         testgame.StartGame();
     }
+
     public void reset(boolean isPlayerRemoved,boolean kickPlayers){
 //  player hase been removed do magic dion wants
         if(isPlayerRemoved)
@@ -59,6 +62,7 @@ public class Arena {
         countdown = new Countdown(minigame,this);
         testgame = new Testgame(this);
     }
+
     public int getId(){return id;}
     public GameState getState(){return state;}
     public List<UUID> getPlayers(){return players;}
