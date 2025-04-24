@@ -10,7 +10,7 @@ import java.util.function.BiFunction;
 
 public class CommandBuilder {
     private final JavaPlugin main;
-    private String name;
+    private final String name;
     private String description;
     private String usage;
     private String permission;
