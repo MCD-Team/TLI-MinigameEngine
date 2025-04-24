@@ -1,7 +1,9 @@
 package mc.tli.minigame_engine.managers;
+//This Class holds all methods related to the arenas it also holds the list of arena's
 
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.instance.Arena;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -18,10 +20,12 @@ import java.util.Objects;
 public class ArenaManager {
     private final List<Arena> arenas = new ArrayList<>();
     private final TliMinigameEngine plugin;
+
+    //get the instance of the main class good OOP practice
     public ArenaManager(TliMinigameEngine main) {
         this.plugin = main;
-
     }
+
     public void addArena()
     {
         FileConfiguration config = plugin.getConfig();
@@ -35,6 +39,7 @@ public class ArenaManager {
                 plugin.getLogger().warning("Arenas world null");
                 return;
             }
+
             arenas.add(new Arena(Integer.parseInt(str),new Location(
                     world,
                     config.getDouble("arenas."+str+".x"),
@@ -47,19 +52,6 @@ public class ArenaManager {
         if(arenas.isEmpty()) {
             System.out.println("No arena created due to missing config");
         }
-    }
-    public List<Arena> getArenas() {return arenas;}
-    public Arena getArena(Player player) {
-        for(Arena arena: arenas) {
-            if(arena.getPlayers().contains(player.getUniqueId())) return arena;
-        }
-        return null;
-    }
-    public Arena getArena(int id) {
-        for(Arena arena: arenas) {
-            if(arena.getId() == id) {return arena;}
-        }
-        return null;
     }
     private static String copyDirectory(Path source, Path target) throws IOException {
         Files.walkFileTree(source, new SimpleFileVisitor<>() {
@@ -126,5 +118,23 @@ public class ArenaManager {
 
         // Print the target directory for the Queue System to place them in the correct world
         return arenaName;
+    }
+    //Getters
+    public List<Arena> getArenas() {
+        return arenas;
+    }
+
+    public Arena getArena(Player player) {
+        for(Arena arena: arenas) {
+            if(arena.getPlayers().contains(player.getUniqueId())) return arena;
+        }
+        return null;
+    }
+
+    public Arena getArena(int id) {
+        for(Arena arena: arenas) {
+            if(arena.getId() == id) {return arena;}
+        }
+        return null;
     }
 }

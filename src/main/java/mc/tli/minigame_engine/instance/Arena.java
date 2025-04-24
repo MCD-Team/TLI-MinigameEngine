@@ -6,6 +6,8 @@ import mc.tli.minigame_engine.managers.ConfigManager;
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.commands.banUser;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
@@ -13,14 +15,13 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.logging.Logger;
+
 
 public class Arena {
     private final Integer id;
@@ -104,17 +105,28 @@ public class Arena {
     public void sendMessage(String message){
         if(!message.isEmpty()){
             for(UUID uuid : players){
-                Bukkit.getPlayer(uuid).sendMessage(message);
+                Objects.requireNonNull(Bukkit.getPlayer(uuid)).sendMessage(message);
             }
         }else{
             System.out.println("Message is empty");
         }
     }
 
-    //all Integers are put in are counted in game ticks
+    //all Integers are put in are counted in miliseconds
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut){
+        Component titleMsg =  Component.text(title);
+        Component subtitleMsg =  Component.text(subtitle);
+        Title titleToScreen = Title.title(
+                titleMsg,
+                subtitleMsg,
+                Title.Times.times(
+                        Duration.ofMillis(fadeIn),
+                        Duration.ofMillis(stay),
+                        Duration.ofMillis(fadeOut)
+                )
+        );
         for(UUID uuid : players){
-            Bukkit.getPlayer(uuid).sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+            Objects.requireNonNull(Bukkit.getPlayer(uuid)).showTitle(titleToScreen);
         }
     }
 
@@ -127,7 +139,7 @@ public class Arena {
             }
 
             removePlayer(Objects.requireNonNull(Bukkit.getPlayer(uuid)));
-            Bukkit.getPlayer(uuid).teleport(configManager.getLobbyLocation());
+            Objects.requireNonNull(Bukkit.getPlayer(uuid)).teleport(configManager.getLobbyLocation());
         }
     }
 
@@ -176,7 +188,7 @@ public class Arena {
         }
     }
 
-    //getters
+    //Getters
     public int getId(){
         return id;
     }
@@ -192,7 +204,7 @@ public class Arena {
     public Testgame getGame(){
         return testgame;
     }
-    //setters
+    //Setters
     //set's the arena state based on the GAMESTATE enum
     public void setState(GameState state){
         this.state = state;

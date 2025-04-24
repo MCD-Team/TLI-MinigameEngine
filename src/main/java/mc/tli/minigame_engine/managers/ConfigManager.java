@@ -1,6 +1,8 @@
 package mc.tli.minigame_engine.managers;
+//This class contains all logic linked to the config
 
 import mc.tli.minigame_engine.TliMinigameEngine;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,13 +11,17 @@ import java.util.Objects;
 
 public class ConfigManager {
     private FileConfiguration config;
+    private final TliMinigameEngine main;
     public ConfigManager (TliMinigameEngine main){
+        this.main = main;
         config = main.getConfig();
     }
-    public void initConfig(TliMinigameEngine main){
+    //Method to initialize the config
+    public void initConfig(){
 
         if(!main.getDataFolder().exists()){
             main.getDataFolder().mkdir();
+            System.out.println("Data folder created restart server");
         }
 
         if(this.config == null){
@@ -27,6 +33,7 @@ public class ConfigManager {
         }
         main.saveConfig();
     }
+    //Getters for the config values
     public  int getPlayerTreshold(){return config.getInt("playerTreshold");}
     public  int getKickCountdown(){return config.getInt("kickCountdown");}
     public  int getRequiredPlayers(){return config.getInt("required-players");}

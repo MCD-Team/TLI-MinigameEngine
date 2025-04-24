@@ -1,8 +1,8 @@
 package mc.tli.minigame_engine.listeners;
-
+//this class is used to handle player connections and disconnections
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.instance.Arena;
-import org.bukkit.entity.Player;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;

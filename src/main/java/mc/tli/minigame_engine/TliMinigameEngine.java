@@ -2,15 +2,18 @@ package mc.tli.minigame_engine;
 
 import mc.tLIUtils.Utils;
 import mc.tLIUtils.builders.CommandBuilder;
+
 import mc.tli.minigame_engine.commands.GameCommand;
 import mc.tli.minigame_engine.listeners.MenuListener;
 import mc.tli.minigame_engine.managers.ArenaManager;
 import mc.tli.minigame_engine.managers.ConfigManager;
 import mc.tli.minigame_engine.commands.banUser;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public final class TliMinigameEngine extends JavaPlugin {
@@ -34,7 +37,7 @@ public final class TliMinigameEngine extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
         try{
-            configmanager.initConfig(this);
+            configmanager.initConfig();
         }catch(NullPointerException e){
             System.out.println("Error initializing config");
         }
@@ -42,8 +45,8 @@ public final class TliMinigameEngine extends JavaPlugin {
         arenamanger.addArena();
 
         //register commands
-        getCommand("moderationban").setExecutor(new banUser(this));
-        getCommand("game").setExecutor(new GameCommand(this));
+        Objects.requireNonNull(getCommand("moderationban")).setExecutor(new banUser(this));
+        Objects.requireNonNull(getCommand("game")).setExecutor(new GameCommand(this));
         getServer().getPluginManager().registerEvents(new MenuListener(this), this);
         new CommandBuilder(this,"test")
                 .setDescription("Test command")
@@ -63,6 +66,7 @@ public final class TliMinigameEngine extends JavaPlugin {
                 })
                 .registerCommand();
     }
+    //Getters
     public ArenaManager getArenaManager() {
         return arenamanger;
     }

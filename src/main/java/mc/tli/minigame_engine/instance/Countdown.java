@@ -1,8 +1,9 @@
 package mc.tli.minigame_engine.instance;
-
+//This class contains the countdown logic for the game
 import mc.tli.minigame_engine.GameState;
 import mc.tli.minigame_engine.managers.ConfigManager;
 import mc.tli.minigame_engine.TliMinigameEngine;
+
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -26,6 +27,7 @@ public class Countdown extends BukkitRunnable {
          Arena.addBossbar(arena.getPlayers(),bossBar);
         runTaskTimer(main, 0, 20);
     }
+
 //handel actual countdown logic
     @Override
     public void run() {

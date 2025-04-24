@@ -1,6 +1,7 @@
 package mc.tli.minigame_engine.instance;
-
+//This class holds all logic needed for the testgame
 import mc.tli.minigame_engine.GameState;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,9 +12,11 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class Testgame extends Game implements Listener{
+    //var added for later custom banning system
     private boolean isPlayerRemoved = false;
     private final Arena arena;
     private final HashMap<UUID,Integer> points = new HashMap<>();
+    //constructor to get the arena object
     public Testgame(Arena arena) {
         this.arena = arena;
     }

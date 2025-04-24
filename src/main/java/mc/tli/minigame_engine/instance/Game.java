@@ -1,7 +1,5 @@
 package mc.tli.minigame_engine.instance;
 
-import mc.tli.minigame_engine.GameState;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import java.util.HashMap;
