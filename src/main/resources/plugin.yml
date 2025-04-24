@@ -9,5 +9,10 @@ commands:
     description: used to ban people in the middel of live minigames
     usage: /miniban
   game:
+    description: used to start a minigame
+    usage: /game
+  test:
+    description: used to test the plugin
+    usage: /test
 
 
