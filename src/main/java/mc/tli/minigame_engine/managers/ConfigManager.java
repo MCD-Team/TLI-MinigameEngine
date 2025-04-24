@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.Objects;
+
 public class ConfigManager {
     private FileConfiguration config;
     public ConfigManager (TliMinigameEngine main){
@@ -31,12 +33,19 @@ public class ConfigManager {
     public  int getMaxPlayers(){return config.getInt("max-players");}
     public  int getCountDownSeconds(){return config.getInt("countdown-seconds");}
     public  Location getLobbyLocation(){
-        return new Location(
-                Bukkit.getWorld(config.getString("lobby-spawn.world")),
+        Location lobbyLocation = new Location(
+                Bukkit.getWorld(Objects.requireNonNull(config.getString("lobby-spawn.world"))),
                 config.getDouble("lobby-spawn.x"),
                 config.getDouble("lobby-spawn.y"),
                 config.getDouble("lobby-spawn.z"),
                 (float)config.getDouble("lobby-spawn.yaw"),
                 (float)config.getDouble("lobby-spawn.pitch"));
+        if(lobbyLocation.getWorld() == null) {
+            System.out.println("Lobby world is null");
+            return null;
+        }else{
+            return lobbyLocation;
+        }
+
     }
 }
