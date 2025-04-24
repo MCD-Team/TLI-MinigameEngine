@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class Arena {
     private final int id;
-    private final Location spawn;
+    private final Location arenaSpawn;
     private Countdown countdown;
     private GameState state;
     private final List<UUID> players;
@@ -26,19 +26,19 @@ public class Arena {
     private final TliMinigameEngine minigame;
     private final banUser banCommand;
     private final ConfigManager configManager;
-    public Arena(int id, Location spawn, TliMinigameEngine minigame) {
+    public Arena(int id, Location arenaSpawn, TliMinigameEngine minigame) {
         this.configManager = new ConfigManager(minigame);
         this.id = id;
-        this.spawn = spawn;
+        this.arenaSpawn = arenaSpawn;
         this.state = GameState.QUEUEING;
-        this.players = new ArrayList<UUID>();
+        this.players = new ArrayList<>();
         this.countdown = new Countdown(minigame,this);
         this.testgame = new Testgame(this);
         this.minigame = minigame;
         this.banCommand = new banUser(minigame);
     }
     public void startGame(){
-        testgame.start();
+        testgame.StartGame();
     }
     public void reset(boolean isPlayerRemoved,boolean kickPlayers){
 //  player hase been removed do magic dion wants
@@ -65,8 +65,9 @@ public class Arena {
 
     public void addPlayer(Player player){
         players.add(player.getUniqueId());
-        player.teleport(spawn);
-        if(state.equals(GameState.QUEUEING) &&players.size()>= configManager.getRequiredPlayers()&&players.size()<=configManager.getMaxPlayers()){
+        System.out.println("Player added to arena at:" + arenaSpawn);
+        player.teleport(arenaSpawn);
+        if(state.equals(GameState.QUEUEING) && players.size()>= configManager.getRequiredPlayers()&&players.size()<=configManager.getMaxPlayers()){
             countdown.start();
             sendMessage("Enough players have joined starting countdown");
         }
