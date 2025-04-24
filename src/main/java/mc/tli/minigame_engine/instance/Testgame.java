@@ -10,14 +10,15 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class Testgame implements Listener {
+public class Testgame extends Game implements Listener{
     private boolean isPlayerRemoved = false;
     private final Arena arena;
     private final HashMap<UUID,Integer> points = new HashMap<>();
     public Testgame(Arena arena) {
         this.arena = arena;
     }
-    public void start(){
+    @Override
+    void StartGame() {
         arena.setState(GameState.LIVE);
         arena.sendMessage(ChatColor.WHITE+"Game started!");
         for(UUID uuid: arena.getPlayers()){
