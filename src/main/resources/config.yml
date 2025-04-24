@@ -12,7 +12,7 @@ lobby-spawn:
   pitch: 0
 arenas:
   0:
-    world: 'minigame'
+    world: 'world'
     x: 233
     y: 134
     z: -102
