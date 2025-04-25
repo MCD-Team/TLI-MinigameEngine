@@ -1,8 +1,6 @@
 package mc.tli.minigame_engine;
 
-import mc.tLIUtils.Utils;
-import mc.tLIUtils.builders.CommandBuilder;
-
+import mc.tli.minigame_engine.builders.CommandBuilder;
 import mc.tli.minigame_engine.commands.GameCommand;
 import mc.tli.minigame_engine.listeners.MenuListener;
 import mc.tli.minigame_engine.managers.ArenaManager;
@@ -17,10 +15,10 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 public final class TliMinigameEngine extends JavaPlugin {
-    public static Utils utils;
     private ArenaManager arenamanger;
     private ConfigManager configmanager;
     public static Logger logger;
+
 
     @Override
     public void onEnable() {
@@ -41,7 +39,6 @@ public final class TliMinigameEngine extends JavaPlugin {
         }catch(NullPointerException e){
             System.out.println("Error initializing config");
         }
-        utils = (Utils)Bukkit.getServer().getPluginManager().getPlugin("TLI-Utils");
         arenamanger.addArena();
 
         //register commands
@@ -69,8 +66,5 @@ public final class TliMinigameEngine extends JavaPlugin {
     //Getters
     public ArenaManager getArenaManager() {
         return arenamanger;
-    }
-    public Utils getUtils() {
-        return utils;
     }
 }

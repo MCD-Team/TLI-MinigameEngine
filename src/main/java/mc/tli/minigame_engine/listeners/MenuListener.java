@@ -1,7 +1,8 @@
 package mc.tli.minigame_engine.listeners;
 //this class is used to handle the menu for the mini-game engine
-import mc.tLIUtils.guis;
-import mc.tLIUtils.utilities;
+
+import mc.tliUtils.Guis;
+import mc.tliUtils.Utilities;
 
 import mc.tli.minigame_engine.GameState;
 import mc.tli.minigame_engine.TliMinigameEngine;
@@ -40,7 +41,7 @@ public class MenuListener implements Listener {
             return;
         }
         //get the TestGame inventory from guis from the utils plugin
-        Inventory selector = guis.TestGame(player);
+        Inventory selector = Guis.TestGame(player);
         if(player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)){
             System.out.println("Open menu");
             player.openInventory(selector);
@@ -51,7 +52,7 @@ public class MenuListener implements Listener {
     public void onClick(InventoryClickEvent event){
 
         String menuTitle =  event.getView().title().toString();
-        if(utilities.removeColourCodes(menuTitle).equals("Test") && event.getCurrentItem() != null){
+        if(Utilities.removeColourCodes(menuTitle).equals("Test") && event.getCurrentItem() != null){
             Player player = (Player) event.getWhoClicked();
             switch(event.getRawSlot()){
                 case 22:
