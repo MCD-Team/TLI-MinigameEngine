@@ -2,7 +2,7 @@ package mc.tli.minigame_engine.commands;
 
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.instance.Arena;
-import mc.tli.minigame_engine.managers.ArenaManager;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,7 +22,7 @@ public class GameCommand implements CommandExecutor {
             commandSender.sendMessage("DEBUG: Arena is " + (arena == null ? "null" : "not null"));
             if(arena == null) {
                plugin.getArenaManager().addArena();
-               commandSender.sendMessage(ChatColor.GREEN + "Arena added to the game!");
+               commandSender.sendMessage(NamedTextColor.GREEN + "Arena added to the game!");
                arena = plugin.getArenaManager().getArena(player);
                commandSender.sendMessage("DEBUG: Arena is " + (arena == null ? "null" : "not null"));
             }
@@ -33,23 +33,23 @@ public class GameCommand implements CommandExecutor {
                     if (!arena.getPlayers().isEmpty()) {
                         arena.removePlayer(player);
                     }else{
-                        player.sendMessage(ChatColor.RED + "No arena's found");
+                        player.sendMessage(NamedTextColor.RED + "No arena's found");
                     }
                 } else {
-                    player.sendMessage(ChatColor.RED + "You are not in an arena");
+                    player.sendMessage(NamedTextColor.RED + "You are not in an arena");
                 }
             } else if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
-                player.sendMessage(ChatColor.GREEN + "Arenas:");
+                player.sendMessage(NamedTextColor.GREEN + "Arenas:");
                 if(plugin.getArenaManager().getArenas().isEmpty()) {
-                    player.sendMessage(ChatColor.RED + "No arenas found");
+                    player.sendMessage(NamedTextColor.RED + "No arenas found");
                 }
                 for (Arena ar : plugin.getArenaManager().getArenas()) {
-                    player.sendMessage(ChatColor.GREEN + "-" + ar.getId());
+                    player.sendMessage(NamedTextColor.GREEN + "-" + ar.getId());
                 }
                 return false;
 
             }else {
-                player.sendMessage(ChatColor.RED + "Usage: /game leave");
+                player.sendMessage(NamedTextColor.RED + "Usage: /game leave");
             }
         }
         return false;
