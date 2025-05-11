@@ -2,19 +2,20 @@ package mc.tli.minigame_engine.instance;
 //The arena class holds all methods related to arena's it holds players and the game state
 
 import mc.tli.minigame_engine.GameState;
-
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.commands.banUser;
-
 import mc.tli.minigame_engine.managers.ConfigManager;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
+import static net.kyori.adventure.title.Title.Times.times;
+import static net.kyori.adventure.title.Title.title;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.OminousItemSpawner;
 import org.bukkit.entity.Player;
 
 
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
 
 
 public class Arena {
@@ -110,18 +112,18 @@ public class Arena {
                 Objects.requireNonNull(Bukkit.getPlayer(uuid)).sendMessage(message);
             }
         }else{
-            System.out.println("Message is empty");
+            minigame.getLogger().warning("No message given");
         }
     }
 
-    //all Integers are put in are counted in miliseconds
+    //all Integers are put in are counted in milliseconds
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut){
         Component titleMsg =  Component.text(title);
         Component subtitleMsg =  Component.text(subtitle);
-        Title titleToScreen = Title.title(
+        Title titleToScreen = title(
                 titleMsg,
                 subtitleMsg,
-                Title.Times.times(
+                times(
                         Duration.ofMillis(fadeIn),
                         Duration.ofMillis(stay),
                         Duration.ofMillis(fadeOut)
@@ -145,7 +147,7 @@ public class Arena {
         }
     }
 
-    //adds a bossbar to the players in the arena
+    //adds a boss bar to the players in the arena
     public static void addBossbar(List<UUID> uuids,BossBar bossBar){
         final List<Player>players = new ArrayList<>();
         for(UUID uuid: uuids){
@@ -186,7 +188,7 @@ public class Arena {
     public static void addTitle(List<Player>players,String Title,String subText,int fadeIn,int stayTime,int fadeOut){
         for(Player p : players){
             if(p != null){
-                p.sendTitle(Title, subText, fadeIn, stayTime, fadeOut);
+                p.showTitle(title(Component.text(Title),Component.text(subText),times(Duration.ofMillis(fadeIn), Duration.ofMillis(stayTime), Duration.ofMillis(fadeOut))));
             }
         }
     }
