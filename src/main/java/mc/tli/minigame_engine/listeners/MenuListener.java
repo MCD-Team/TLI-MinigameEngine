@@ -9,6 +9,7 @@ import mc.tli.minigame_engine.managers.ConfigManager;
 
 import mc.tliUtils.guis.Guis;
 import mc.tliUtils.guis.Utilities;
+
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
@@ -29,7 +30,7 @@ public class MenuListener implements Listener {
 
     public MenuListener(TliMinigameEngine plugin) {
         this.plugin = plugin;
-        this.configManager = new ConfigManager(plugin);
+        this.configManager = plugin.getConfigManager();
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -37,7 +38,7 @@ public class MenuListener implements Listener {
         Player player = event.getPlayer();
         ItemStack mainHandItem = player.getInventory().getItemInMainHand();
         if(mainHandItem.getType() == Material.AIR){
-            System.out.println("Item in main hand is not a compass");
+            plugin.getLogger().warning("The item in ur main hand is not a compass");
             return;
         }
 
@@ -45,7 +46,7 @@ public class MenuListener implements Listener {
         if(player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)){
             //get the TestGame inventory from guis from the utils plugin
             Inventory selector = Guis.TestGame(player);
-            System.out.println("Open menu");
+            plugin.getLogger().info(player.getName() + " selected a compass");
             player.openInventory(selector);
         }
     }
