@@ -1,14 +1,14 @@
 package mc.tli.minigame_engine.listeners;
 //this class is used to handle the menu for the mini-game engine
 
-import mc.tliUtils.Guis;
-import mc.tliUtils.Utilities;
 
 import mc.tli.minigame_engine.GameState;
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.instance.Arena;
 import mc.tli.minigame_engine.managers.ConfigManager;
 
+import mc.tliUtils.guis.Guis;
+import mc.tliUtils.guis.Utilities;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
@@ -40,9 +40,11 @@ public class MenuListener implements Listener {
             System.out.println("Item in main hand is not a compass");
             return;
         }
-        //get the TestGame inventory from guis from the utils plugin
-        Inventory selector = Guis.TestGame(player);
+
+
         if(player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)){
+            //get the TestGame inventory from guis from the utils plugin
+            Inventory selector = Guis.TestGame(player);
             System.out.println("Open menu");
             player.openInventory(selector);
         }
