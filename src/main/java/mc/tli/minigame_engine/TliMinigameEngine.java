@@ -75,4 +75,7 @@ public final class TliMinigameEngine extends JavaPlugin {
     public ArenaManager getArenaManager() {
         return arenamanger;
     }
+    public ConfigManager getConfigManager() {
+        return configmanager;
+    }
 }
