@@ -3,7 +3,6 @@ package mc.tli.minigame_engine.commands;
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.instance.Arena;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
