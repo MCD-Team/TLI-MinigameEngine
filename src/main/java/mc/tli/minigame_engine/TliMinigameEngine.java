@@ -7,6 +7,9 @@ import mc.tli.minigame_engine.managers.ArenaManager;
 import mc.tli.minigame_engine.managers.ConfigManager;
 import mc.tli.minigame_engine.commands.banUser;
 
+import mc.tliUtils.Utils;
+import mc.tliUtils.guis.Guis;
+import mc.tliUtils.guis.Utilities;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,11 +21,16 @@ public final class TliMinigameEngine extends JavaPlugin {
     private ArenaManager arenamanger;
     private ConfigManager configmanager;
     public static Logger logger;
-
-
+    private final Guis guis =  Utils.getGuis();
+    private final Utilities utilities = Utils.getUtilities();
     @Override
     public void onEnable() {
         logger = this.getLogger();
+        if(guis == null){
+            System.out.println("Guis is null");
+        }else if(utilities == null){
+            getLogger().warning("utilities is null");
+        }
         this.arenamanger = new ArenaManager(this);
         this.configmanager = new ConfigManager(this);
         Bukkit.getScheduler().runTask(this, () -> {
