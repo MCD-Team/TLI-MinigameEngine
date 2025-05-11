@@ -2,10 +2,11 @@ package mc.tli.minigame_engine.instance;
 //The arena class holds all methods related to arena's it holds players and the game state
 
 import mc.tli.minigame_engine.GameState;
-import mc.tli.minigame_engine.managers.ConfigManager;
+
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.commands.banUser;
 
+import mc.tli.minigame_engine.managers.ConfigManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -13,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.OminousItemSpawner;
 import org.bukkit.entity.Player;
 
 
@@ -36,7 +38,6 @@ public class Arena {
 
     //constructor to get the id and the spawn location of the arena and a reference to the main class
     public Arena(int id, Location arenaSpawn, TliMinigameEngine minigame) {
-        this.configManager = new ConfigManager(minigame);
         this.id = id;
         this.arenaSpawn = arenaSpawn;
         this.state = GameState.QUEUEING;
@@ -45,6 +46,7 @@ public class Arena {
         this.testgame = new Testgame(this);
         this.minigame = minigame;
         this.banCommand = new banUser(minigame);
+        this.configManager = minigame.getConfigManager();
 
     }
 
@@ -57,10 +59,10 @@ public class Arena {
         if(isPlayerRemoved)
         {
             //TO DO add title screen and stop the game
-            teleportPlayers(players,configManager.getLobbyLocation());
+            teleportPlayers(players,configManager.getLobbyLocation(),minigame);
         }
         if(kickPlayers){
-            teleportPlayers(players,configManager.getLobbyLocation());
+            teleportPlayers(players,configManager.getLobbyLocation(),minigame);
         }
         if(state == GameState.LIVE){
             state = GameState.FINISHED;
@@ -75,7 +77,7 @@ public class Arena {
     //adds player to the arena and teleports them to the spawn location
     public void addPlayer(Player player){
         players.add(player.getUniqueId());
-        System.out.println("Player added to arena at:" + arenaSpawn);
+        minigame.getLogger().info("Added player " + player.getName());
         player.teleport(arenaSpawn);
         if(state.equals(GameState.QUEUEING) && players.size() >= configManager.getRequiredPlayers() && players.size() <= configManager.getMaxPlayers()){
             countdown.start();
@@ -134,7 +136,7 @@ public class Arena {
     public void kickPlayers(){
         for(UUID uuid : players){
             if(Bukkit.getPlayer(uuid) == null){
-                System.out.println("Player is null skipping player");
+                minigame.getLogger().info("Player is null skipping player");
                 continue;
             }
 
@@ -167,8 +169,9 @@ public class Arena {
     }
 
     //method to teleport all players in the arena to a location
-    public static void teleportPlayers(List<UUID> players, Location location){
+    public static void teleportPlayers(List<UUID> players, Location location, TliMinigameEngine minigame){
         if(location == null){
+            minigame.getLogger().info("Location is null skipping teleport");
             System.out.println("Location is null skipping teleport");
             return;
         }
