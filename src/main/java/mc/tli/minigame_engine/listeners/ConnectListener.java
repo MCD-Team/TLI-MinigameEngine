@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ConnectListener implements Listener {
-    private TliMinigameEngine plugin;
+    private final TliMinigameEngine plugin;
     public ConnectListener(TliMinigameEngine plugin) {
         this.plugin = plugin;
     }
