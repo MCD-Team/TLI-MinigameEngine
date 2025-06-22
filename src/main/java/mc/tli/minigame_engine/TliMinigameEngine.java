@@ -21,18 +21,26 @@ public final class TliMinigameEngine extends JavaPlugin {
     private ArenaManager arenamanger;
     private ConfigManager configmanager;
     public static Logger logger;
-    private final Guis guis =  Utils.getGuis();
-    private final Utilities utilities = Utils.getUtilities();
+    //needed to create a utils instance to use the guis and utilities
+    private static Utils utils;
+    private Guis guis;
+    private Utilities utilities;
+
     @Override
     public void onEnable() {
+        utils = Utils.getInstance();
+        guis = Utils.getGuis();
+        utilities = Utils.getUtilities();
         logger = this.getLogger();
         if(guis == null){
-            System.out.println("Guis is null");
+            getLogger().warning("Guis is null");
         }else if(utilities == null){
             getLogger().warning("utilities is null");
         }
+
         this.arenamanger = new ArenaManager(this);
         this.configmanager = new ConfigManager(this);
+
         Bukkit.getScheduler().runTask(this, () -> {
             if (Bukkit.getWorlds().isEmpty()) {
                 getLogger().severe("NO WORLDS LOADED! Check server logs");
