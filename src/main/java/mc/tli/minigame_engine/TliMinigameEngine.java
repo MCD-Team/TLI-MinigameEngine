@@ -36,18 +36,7 @@ public final class TliMinigameEngine extends JavaPlugin {
     }
     @Override
     public void onEnable() {
-        utils = Utils.getInstance();
-        getLogger().info("Utils: " + utils.toString());
-        guis = utils.getGuis();
-        assert utilities != null;
-        utilities = utils.getUtilities();
-        logger = this.getLogger();
-        if(guis == null){
-            getLogger().warning("Guis is null");
-        }else if(utilities == null){
-            getLogger().warning("utilities is null");
-        }
-
+        this.initUtils();
         this.arenamanger = new ArenaManager(this);
         this.configmanager = new ConfigManager(this);
 
@@ -88,6 +77,20 @@ public final class TliMinigameEngine extends JavaPlugin {
                     return null;
                 })
                 .registerCommand();
+    }
+    private void initUtils(){
+        utils = Utils.getInstance();
+        getLogger().info("Utils: " + utils.toString());
+        guis = utils.getGuis();
+        assert utilities != null;
+        utilities = utils.getUtilities();
+        assert guis != null;
+        logger = this.getLogger();
+        if(guis == null){
+            getLogger().warning("Guis is null");
+        }else if(utilities == null){
+            getLogger().warning("utilities is null");
+        }
     }
     //Getters
     public ArenaManager getArenaManager() {
