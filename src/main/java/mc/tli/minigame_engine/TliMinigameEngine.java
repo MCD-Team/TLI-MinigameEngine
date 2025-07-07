@@ -6,7 +6,6 @@ import mc.tli.minigame_engine.listeners.MenuListener;
 import mc.tli.minigame_engine.managers.ArenaManager;
 import mc.tli.minigame_engine.managers.ConfigManager;
 import mc.tli.minigame_engine.commands.banUser;
-
 import mc.tliUtils.Utils;
 import mc.tliUtils.guis.Guis;
 import mc.tliUtils.guis.Utilities;
@@ -27,10 +26,21 @@ public final class TliMinigameEngine extends JavaPlugin {
     private Utilities utilities;
 
     @Override
+    public void onLoad() {
+//         Initialize the Utils class with this plugin instance
+        Utils.init(this);
+        utils = Utils.getInstance();
+        if (utils == null) {
+            getLogger().severe("Utils instance is null! Make sure Utils is properly initialized.");
+        }
+    }
+    @Override
     public void onEnable() {
         utils = Utils.getInstance();
-        guis = Utils.getGuis();
-        utilities = Utils.getUtilities();
+        getLogger().info("Utils: " + utils.toString());
+        guis = utils.getGuis();
+        assert utilities != null;
+        utilities = utils.getUtilities();
         logger = this.getLogger();
         if(guis == null){
             getLogger().warning("Guis is null");

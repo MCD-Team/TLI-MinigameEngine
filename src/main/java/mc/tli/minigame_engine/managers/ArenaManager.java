@@ -50,7 +50,7 @@ public class ArenaManager {
                     ,plugin));
         }
         if(arenas.isEmpty()) {
-            System.out.println("No arena created due to missing config");
+            plugin.getLogger().warning("No arenas found in config");
         }
     }
     private static String copyDirectory(Path source, Path target) throws IOException {
