@@ -10,7 +10,6 @@ import mc.tli.minigame_engine.commands.banUser;
 import mc.tliUtils.Utils;
 import mc.tliUtils.guis.Guis;
 import mc.tliUtils.guis.Utilities;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -54,7 +53,7 @@ public final class TliMinigameEngine extends JavaPlugin {
         arenamanger.addArena();
 
         //register commands
-        Objects.requireNonNull(getCommand("world").setExecutor(new WorldCommand(this));
+        Objects.requireNonNull(getCommand("world")).setExecutor(new WorldCommand(this));
         Objects.requireNonNull(getCommand("moderationban")).setExecutor(new banUser(this));
         Objects.requireNonNull(getCommand("game")).setExecutor(new GameCommand(this));
         getServer().getPluginManager().registerEvents(new MenuListener(this), this);
