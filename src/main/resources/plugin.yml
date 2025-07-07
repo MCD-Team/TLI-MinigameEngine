@@ -14,5 +14,10 @@ commands:
   test:
     description: used to test the plugin
     usage: /test
+  create:
+    description: Create a simple void world
+    usage: /create <world_name>
+    permission: tli.create.world
+    permission-message: You don't have permission to create worlds!
 
 

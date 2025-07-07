@@ -2,6 +2,7 @@ package mc.tli.minigame_engine;
 
 import mc.tli.minigame_engine.builders.CommandBuilder;
 import mc.tli.minigame_engine.commands.GameCommand;
+import mc.tli.minigame_engine.commands.WorldCommand;
 import mc.tli.minigame_engine.listeners.MenuListener;
 import mc.tli.minigame_engine.managers.ArenaManager;
 import mc.tli.minigame_engine.managers.ConfigManager;
@@ -42,6 +43,7 @@ public final class TliMinigameEngine extends JavaPlugin {
         assert utilities != null;
         utilities = utils.getUtilities();
         logger = this.getLogger();
+
         if(guis == null){
             getLogger().warning("Guis is null");
         }else if(utilities == null){
@@ -58,16 +60,21 @@ public final class TliMinigameEngine extends JavaPlugin {
                 getLogger().info("Loaded worlds: " + Bukkit.getWorlds());
             }
         });
+
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
+
         try{
             configmanager.initConfig();
         }catch(NullPointerException e){
             System.out.println("Error initializing config");
         }
+
+        arenamanger.loadWorldStatus();
         arenamanger.addArena();
 
         //register commands
+        Objects.requireNonNull(getCommand("world").setExecutor(new WorldCommand(this));
         Objects.requireNonNull(getCommand("moderationban")).setExecutor(new banUser(this));
         Objects.requireNonNull(getCommand("game")).setExecutor(new GameCommand(this));
         getServer().getPluginManager().registerEvents(new MenuListener(this), this);
@@ -88,6 +95,12 @@ public final class TliMinigameEngine extends JavaPlugin {
                     return null;
                 })
                 .registerCommand();
+    }
+
+    public void onDisable() {
+        if (arenamanger != null) {
+            arenamanger.saveWorldStatus();
+        }
     }
     //Getters
     public ArenaManager getArenaManager() {
