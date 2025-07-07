@@ -40,13 +40,6 @@ public final class TliMinigameEngine extends JavaPlugin {
         this.arenamanger = new ArenaManager(this);
         this.configmanager = new ConfigManager(this);
 
-        Bukkit.getScheduler().runTask(this, () -> {
-            if (Bukkit.getWorlds().isEmpty()) {
-                getLogger().severe("NO WORLDS LOADED! Check server logs");
-            } else {
-                getLogger().info("Loaded worlds: " + Bukkit.getWorlds());
-            }
-        });
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
         try{
