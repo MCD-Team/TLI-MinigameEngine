@@ -4,7 +4,8 @@ import org.bukkit.Location;
 
 import java.util.HashMap;
 
-abstract class Game {
+public abstract class Game {
     public static HashMap<Integer,Location> islandLocations = new HashMap<Integer,Location>();
-    abstract void StartGame();
+    private final Arena arena = null;
+    public abstract void StartGame();
 }
