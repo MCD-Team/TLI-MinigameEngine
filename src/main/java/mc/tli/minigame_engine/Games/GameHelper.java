@@ -1,13 +1,17 @@
 package mc.tli.minigame_engine.Games;
 
 import mc.tli.minigame_engine.TliMinigameEngine;
+import me.sk8ingduck.friendsystem.SpigotAPI;
+import me.sk8ingduck.friendsystem.manager.PartyManager;
+
 import java.util.HashMap;
+import java.util.UUID;
 
 public class GameHelper {
-//    SpigotAPI api = SpigotAPI.getInstance();
-//    PartyManager partyManager = api.getPartyManager();
+    SpigotAPI api = SpigotAPI.getInstance();
+    PartyManager partyManager = api.getPartyManager();
 
-    private static TliMinigameEngine mainClassName;
+    private TliMinigameEngine mainClassName;
 
     public GameHelper(TliMinigameEngine mainClassName) {
         this.mainClassName = mainClassName;
@@ -33,16 +37,15 @@ public class GameHelper {
         }
 
         for (String player : players) {
-            String party = "HOI";
-            if (player != null || !player.isEmpty()) {
-                parties.put(player, party);
+            String party = partyManager.getParty(UUID.fromString(player)).toString();
+            if (!player.isEmpty()) {
+                {
+                    parties.put(player, party);
+                }
             }
         }
 
 
-
     }
-
-
 
 }
