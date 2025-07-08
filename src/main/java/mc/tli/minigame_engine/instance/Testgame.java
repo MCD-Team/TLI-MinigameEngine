@@ -2,7 +2,8 @@ package mc.tli.minigame_engine.instance;
 //This class holds all logic needed for the testgame
 import mc.tli.minigame_engine.GameState;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,7 +24,7 @@ public class Testgame extends Game implements Listener{
     @Override
     void StartGame() {
         arena.setState(GameState.LIVE);
-        arena.sendMessage(ChatColor.WHITE+"Game started!");
+        arena.sendMessage(NamedTextColor.WHITE+"Game started!");
         for(UUID uuid: arena.getPlayers()){
             points.put(uuid, 0);
         }
@@ -31,10 +32,10 @@ public class Testgame extends Game implements Listener{
     public void AddPoint(Player player){
         int playerPoints = points.get(player.getUniqueId())+1;
         if(playerPoints == 20){
-            arena.sendMessage(ChatColor.RED + player.getName()+ "has won");
+            arena.sendMessage(NamedTextColor.RED + player.getName()+ "has won");
 //           TO DO arena.reset(isPlayerRemoved,false);
         }else{
-            player.sendMessage(ChatColor.RED+"+1 point u now have"+playerPoints+"points");
+            player.sendMessage(NamedTextColor.RED+"+1 point u now have"+playerPoints+"points");
             points.replace(player.getUniqueId(),playerPoints);
         }
     }
