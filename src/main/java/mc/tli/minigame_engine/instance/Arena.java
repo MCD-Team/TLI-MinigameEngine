@@ -1,9 +1,11 @@
 package mc.tli.minigame_engine.instance;
 //The arena class holds all methods related to arena's it holds players and the game state
 
-import mc.tli.minigame_engine.GameState;
+import mc.tli.minigame_engine.Games.CaptureTheFlag;
+import mc.tli.minigame_engine.enums.GameState;
 import mc.tli.minigame_engine.TliMinigameEngine;
 import mc.tli.minigame_engine.commands.banUser;
+import mc.tli.minigame_engine.enums.GameTypes;
 import mc.tli.minigame_engine.managers.ConfigManager;
 
 import net.kyori.adventure.text.Component;
@@ -33,7 +35,7 @@ public class Arena {
     private Countdown countdown;
     private GameState state;
     private final List<UUID> players;
-    private Testgame testgame;
+    private GameTypes gameType;
     private final TliMinigameEngine minigame;
     private final banUser banCommand;
     private final ConfigManager configManager;
@@ -45,7 +47,7 @@ public class Arena {
         this.state = GameState.QUEUEING;
         this.players = new ArrayList<>();
         this.countdown = new Countdown(minigame,this);
-        this.testgame = new Testgame(this);
+        this.gameType = GameTypes.UNKNOWN;
         this.minigame = minigame;
         this.banCommand = new banUser(minigame);
         this.configManager = minigame.getConfigManager();
@@ -53,7 +55,21 @@ public class Arena {
     }
 
     public void startGame(){
-        testgame.StartGame();
+        switch (gameType){
+            case CAPTURE_THE_FLAG -> {
+                minigame.getLogger().info("Starting Testgame");
+                CaptureTheFlag captureTheFlag = new CaptureTheFlag();
+                captureTheFlag.StartGame();
+            }
+            case UNKNOWN -> {
+                minigame.getLogger().warning("No game type set for arena " + id + " please set a game type");
+                sendMessage("No game type set for arena " + id + " please set a game type");
+            }
+            default -> {
+                minigame.getLogger().warning("Unknown game type for arena " + id);
+                sendMessage("Unknown game type for arena " + id);
+            }
+        }
     }
 
     public void reset(boolean isPlayerRemoved,boolean kickPlayers){
@@ -73,7 +89,7 @@ public class Arena {
         state = GameState.QUEUEING;
         countdown.cancel();
         countdown = new Countdown(minigame,this);
-        testgame = new Testgame(this);
+        gameType = GameTypes.UNKNOWN;
     }
 
     //adds player to the arena and teleports them to the spawn location
@@ -205,13 +221,12 @@ public class Arena {
     public List<UUID> getPlayers(){
         return players;
     }
+    public GameTypes getGameType(GameTypes gameType){return gameType;}
 
-    public Testgame getGame(){
-        return testgame;
-    }
     //Setters
     //set's the arena state based on the GAMESTATE enum
     public void setState(GameState state){
         this.state = state;
     }
+    public void setGameType(GameTypes gameType){this.gameType = gameType;}
 }
