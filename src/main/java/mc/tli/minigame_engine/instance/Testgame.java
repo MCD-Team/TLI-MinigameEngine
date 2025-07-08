@@ -1,6 +1,6 @@
 package mc.tli.minigame_engine.instance;
 //This class holds all logic needed for the testgame
-import mc.tli.minigame_engine.GameState;
+import mc.tli.minigame_engine.enums.GameState;
 
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -22,7 +22,7 @@ public class Testgame extends Game implements Listener{
         this.arena = arena;
     }
     @Override
-    void StartGame() {
+    public void StartGame() {
         arena.setState(GameState.LIVE);
         arena.sendMessage(NamedTextColor.WHITE+"Game started!");
         for(UUID uuid: arena.getPlayers()){
